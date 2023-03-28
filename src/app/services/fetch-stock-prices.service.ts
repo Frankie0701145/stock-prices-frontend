@@ -20,9 +20,14 @@ interface StockPrices{
 export class FetchStockPricesService {
   
   constructor(private _http: HttpClient) { }
-  url: string = "http://localhost:3000/stock-prices"
+  baseUrl: string = "http://localhost:3000"
+  // url: string = "http://localhost:3000/stock-prices"
 
-  getData(): Observable<HttpResponse<any>>{
-    return this._http.get(this.url, { observe: 'response', responseType: 'json'});
+  getData(companyId?: number | string): Observable<HttpResponse<any>>{
+    let url:  string = `${this.baseUrl}/stock-prices`
+    if(companyId){
+      url += `/${companyId}`;
+    }
+    return this._http.get(url, { observe: 'response', responseType: 'json'});
   }
 }

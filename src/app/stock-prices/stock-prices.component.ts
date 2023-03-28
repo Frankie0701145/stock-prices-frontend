@@ -42,8 +42,7 @@ export class StockPricesComponent {
     }
   }
 
-  @ViewChild(MatSort, { static: false }) sort!: MatSort;
-  ngOnInit(){
+  fetchStockPricesService(){
     this._fetchStockPricesService.getData().subscribe((response)=>{
       this.stockPrices = response.body.data.map((data: any)=>({
         companyName: data.company_name, id: data.company_id,
@@ -53,6 +52,23 @@ export class StockPricesComponent {
       this.dataSource = new MatTableDataSource(this.stockPrices);
       this.dataSource.sort = this.sort;
     })
+  }
+
+  fetchStockPrice = (companyId?: number | string )=>{
+    this._fetchStockPricesService.getData(companyId).subscribe((response)=>{
+      this.stockPrices = response.body.data.map((data: any)=>({
+        companyName: data.company_name, id: data.company_id,
+        tickerSymbol: data.symbol, currentPrice: data.price,
+        change: data.percent_change
+      }));
+      this.dataSource = new MatTableDataSource(this.stockPrices);
+      this.dataSource.sort = this.sort;
+    })
+  }
+
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
+  ngOnInit(){
+    this.fetchStockPricesService()
   }
 
 }
