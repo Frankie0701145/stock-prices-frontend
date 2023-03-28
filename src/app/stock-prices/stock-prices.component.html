@@ -2,7 +2,12 @@
 <div class="wrapper">
 
     <div class="filter-wrapper">
-        <app-autocomplete [fetchStockPrice]=fetchStockPrice [label]="'Company Name'"/>
+        <app-autocomplete [fetchStockPrice]=fetchStockPrice [label]="'Search by Company Name'"
+            [searchBy]="'companyName'"
+        />
+        <app-autocomplete [fetchStockPrice]=fetchStockPrice [label]="'Search by Symbol'"
+            [searchBy]="'symbol'"
+        />
     </div>
 
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table" matSort (matSortChange)="announceSortChange($event)">

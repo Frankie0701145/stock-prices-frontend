@@ -7,7 +7,6 @@ interface CompanyNames {
   company_id: number
 }
 
-
 @Component({
   selector: 'app-autocomplete',
   templateUrl: './autocomplete.component.html',
@@ -23,14 +22,17 @@ export class AutocompleteComponent {
   @Input()
   label!: string;
 
-  mySearchControl = new FormControl('companyName');
+  @Input()
+  searchBy!: "companyName" | "symbol" ;
+
+  mySearchControl = new FormControl();
 
 
   filteredCompanies: CompanyNames[] = [];
 
   ngOnInit(){
     let searchTimeout: ReturnType<typeof setTimeout>;
-
+    
     this.mySearchControl.valueChanges.subscribe((value)=> {
 
       clearTimeout(searchTimeout);
@@ -40,8 +42,12 @@ export class AutocompleteComponent {
           this.fetchStockPrice();
           this.filteredCompanies= [];
         }else{
-                  // retrieve companies 
-          this._searchCompaniesService.getData({companyName: value, symbol: null}).subscribe((response)=>{
+                  // retrieve companies
+          let queryOption: {companyName: string| null, symbol: string | null } = { companyName: null, symbol: null}
+          queryOption[this.searchBy] = value; 
+          console.log("*********queryOption********");
+          console.log(queryOption);
+          this._searchCompaniesService.getData(queryOption).subscribe((response)=>{
             const companies = response.body.data;
             this.filteredCompanies = companies;
           });
