@@ -13,7 +13,8 @@ import {MatSortModule} from '@angular/material/sort';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
-
+// <mat-icon>arrow_upward</mat-icon>
+// <mat-icon>arrow_downward</mat-icon>
 @NgModule({
   declarations: [
     AppComponent,

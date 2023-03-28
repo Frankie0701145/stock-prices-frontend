@@ -45,8 +45,6 @@ export class AutocompleteComponent {
                   // retrieve companies
           let queryOption: {companyName: string| null, symbol: string | null } = { companyName: null, symbol: null}
           queryOption[this.searchBy] = value; 
-          console.log("*********queryOption********");
-          console.log(queryOption);
           this._searchCompaniesService.getData(queryOption).subscribe((response)=>{
             const companies = response.body.data;
             this.filteredCompanies = companies;
