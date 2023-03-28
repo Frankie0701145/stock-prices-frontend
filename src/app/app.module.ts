@@ -12,6 +12,7 @@ import { StockPricesComponent } from './stock-prices/stock-prices.component';
 import {MatSortModule} from '@angular/material/sort';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     MatAutocompleteModule,
     MatInputModule,
+    MatIconModule,
     HttpClientModule
   ],
   providers: [],
