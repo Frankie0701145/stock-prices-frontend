@@ -20,8 +20,7 @@ interface StockPrices{
 export class FetchStockPricesService {
   
   constructor(private _http: HttpClient) { }
-  baseUrl: string = "http://localhost:3000"
-  // url: string = "http://localhost:3000/stock-prices"
+  baseUrl: string = "https://stock-prices-api.herokuapp.com"
 
   getData(companyId?: number | string): Observable<HttpResponse<any>>{
     let url:  string = `${this.baseUrl}/stock-prices`

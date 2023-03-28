@@ -13,15 +13,16 @@ interface QueryOption {
 export class SearchCompaniesService {
 
   constructor(private _http: HttpClient) { }
-  url: string = "http://localhost:3000/search-companies"
+  baseUrl: string = "https://stock-prices-api.herokuapp.com"
 
   getData(queryOption: QueryOption): Observable<HttpResponse<any>> {
     const { companyName, symbol } = queryOption;
+    let url:  string = `${this.baseUrl}/search-companies`
     if(companyName){
-      this.url += `?companyName=${companyName}`;
+      url += `?companyName=${companyName}`;
     }else if(symbol){
-      this.url += `?symbol=${symbol}`;
+      url += `?symbol=${symbol}`;
     }
-    return this._http.get(this.url, { observe: 'response', responseType: 'json'})
+    return this._http.get(url, { observe: 'response', responseType: 'json'})
   }
 }
