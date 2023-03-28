@@ -3,7 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 
 interface QueryOption {
-  companyName:string | null,
+  company_name:string | null,
   symbol: string | null
 }
 
@@ -16,7 +16,7 @@ export class SearchCompaniesService {
   baseUrl: string = "https://stock-prices-api.herokuapp.com"
 
   getData(queryOption: QueryOption): Observable<HttpResponse<any>> {
-    const { companyName, symbol } = queryOption;
+    const { company_name: companyName, symbol } = queryOption;
     let url:  string = `${this.baseUrl}/search-companies`
     if(companyName){
       url += `?companyName=${companyName}`;

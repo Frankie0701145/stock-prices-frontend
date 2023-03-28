@@ -2,9 +2,10 @@ import { Component, OnInit, Input  } from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {SearchCompaniesService} from '../services/search-companies.service';
 
-interface CompanyNames {
+interface Company {
   company_name: string,
-  company_id: number
+  company_id: number,
+  symbol: string
 }
 
 @Component({
@@ -23,12 +24,11 @@ export class AutocompleteComponent {
   label!: string;
 
   @Input()
-  searchBy!: "companyName" | "symbol" ;
+  searchBy!: "company_name" | "symbol" ;
 
   mySearchControl = new FormControl();
 
-
-  filteredCompanies: CompanyNames[] = [];
+  filteredCompanies: Company[] = [];
 
   ngOnInit(){
     let searchTimeout: ReturnType<typeof setTimeout>;
@@ -36,27 +36,33 @@ export class AutocompleteComponent {
     this.mySearchControl.valueChanges.subscribe((value)=> {
 
       clearTimeout(searchTimeout);
-
-      searchTimeout = setTimeout(()=>{
-        if(value?.trim() === ""){
-          this.fetchStockPrice();
-          this.filteredCompanies= [];
-        }else{
-                  // retrieve companies
-          let queryOption: {companyName: string| null, symbol: string | null } = { companyName: null, symbol: null}
-          queryOption[this.searchBy] = value; 
-          this._searchCompaniesService.getData(queryOption).subscribe((response)=>{
-            const companies = response.body.data;
-            this.filteredCompanies = companies;
-          });
-        }
-
-      }, 2000);
+      if(typeof value === 'string'){
+        searchTimeout = setTimeout(()=>{
+          if(value?.trim() === ""){
+            this.fetchStockPrice();
+            this.filteredCompanies= [];
+          }else if(value){
+                    // retrieve companies
+            let queryOption: { company_name: string| null, symbol: string | null } = { company_name: null, symbol: null}
+            queryOption[this.searchBy] = value; 
+            this._searchCompaniesService.getData(queryOption).subscribe((response)=>{
+              console.log(response.body.data);
+              this.filteredCompanies = response.body.data;
+            });
+          }else{
+            this.filteredCompanies= [];
+          }
+        }, 700);
+      }
     });
   }
 
-  getStockPrice(companyId: string){
-    console.log("**********companyId**********", companyId)
+  getStockPrice(companyId: number){
     this.fetchStockPrice(companyId);
+  }
+  
+  getOptionText = (companyId: number)=>{
+    let company: Company = this.filteredCompanies.filter((company)=> company.company_id === companyId)[0];
+    return company?.[this.searchBy] || "";
   }
 }
